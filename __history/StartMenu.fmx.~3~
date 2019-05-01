@@ -1,0 +1,45 @@
+object FormStart: TFormStart
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu]
+  BorderStyle = Single
+  Caption = #1053#1072#1081#1076#1080' '#1087#1072#1088#1091
+  ClientHeight = 115
+  ClientWidth = 189
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object ComboBoxLevelSelection: TComboBox
+    Items.Strings = (
+      '2x2'
+      '3x2'
+      '2x4'
+      '3x4')
+    ItemIndex = 0
+    Position.X = 24.000000000000000000
+    Position.Y = 64.000000000000000000
+    Size.Width = 140.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+  end
+  object ButtonStart: TButton
+    Position.X = 24.000000000000000000
+    Position.Y = 32.000000000000000000
+    Size.Width = 137.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = #1053#1072#1095#1072#1090#1100
+    OnClick = ButtonStartClick
+  end
+  object MainMenu: TMainMenu
+    Left = 144
+    Top = 8
+    object MIResults: TMenuItem
+      Text = #1056#1077#1079#1091#1083#1100#1090#1072#1090#1099
+      OnClick = MIResultsClick
+    end
+  end
+end

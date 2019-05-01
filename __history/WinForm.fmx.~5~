@@ -1,0 +1,65 @@
+object FormWin: TFormWin
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 480
+  ClientWidth = 640
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  DesignerMasterStyle = 0
+  object LWin: TLabel
+    StyledSettings = [Family, Style]
+    Position.X = 208.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 273.000000000000000000
+    Size.Height = 145.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 60.000000000000000000
+    TextSettings.FontColor = claCadetblue
+    Text = #1055#1086#1073#1077#1076#1072'!'
+    TabOrder = 1
+  end
+  object LCount: TLabel
+    Position.X = 8.000000000000000000
+    Position.Y = 160.000000000000000000
+    Size.Width = 609.000000000000000000
+    Size.Height = 41.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
+    Text = '0'
+    TabOrder = 3
+  end
+  object LGoodResult: TLabel
+    StyledSettings = [Family, Style]
+    Position.X = 48.000000000000000000
+    Position.Y = 184.000000000000000000
+    Size.Width = 609.000000000000000000
+    Size.Height = 105.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.Font.Size = 60.000000000000000000
+    TextSettings.FontColor = claCadetblue
+    Text = #1054#1090#1083#1080#1095#1085#1099#1081' '#1088#1077#1079#1091#1083#1100#1090#1072#1090
+    TabOrder = 0
+  end
+  object BSave: TButton
+    Position.X = 208.000000000000000000
+    Position.Y = 304.000000000000000000
+    Size.Width = 217.000000000000000000
+    Size.Height = 73.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 5
+    Text = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+    OnClick = BSaveClick
+  end
+  object LTime: TLabel
+    Position.X = 248.000000000000000000
+    Position.Y = 128.000000000000000000
+    Size.Width = 129.000000000000000000
+    Size.Height = 41.000000000000000000
+    Size.PlatformDefault = False
+    TextSettings.HorzAlign = Center
+    Text = '0'
+    TabOrder = 2
+  end
+end

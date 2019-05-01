@@ -1,0 +1,58 @@
+unit WinForm;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  FMX.Controls.Presentation, FMX.StdCtrls, System.Rtti, FMX.Grid.Style,
+  FMX.ScrollBox, FMX.Grid;
+
+type
+  TFormWin = class(TForm)
+    LWin: TLabel;
+    LCount: TLabel;
+    Label1: TLabel;
+    BSave: TButton;
+  private
+    { Private declarations }
+  public
+    Constructor Create(AOwner:TComponent;const Results:array of Integer; Count: Integer;TimeSeconds:Integer);overload;
+  end;
+
+var
+  FormWin: TFormWin;
+
+implementation
+
+{$R *.fmx}
+
+{ TFormWin }
+
+constructor TFormWin.Create(AOwner: TComponent;
+  const Results: array of Integer;Count: Integer; TimeSeconds:Integer);
+var
+  i: Integer;
+  PlayerCol: TColumn;
+  PointsCol: TColumn;
+  Minutes:Integer;
+  Seconds: Integer;
+  Strmin: string;
+  StrSec: string;
+
+begin
+   Inherited Create(AOwner);
+   Minutes:= TimeSeconds div 60;
+   Seconds:= TimeSeconds mod 60;
+   Strmin:=IntToStr(Minutes);
+   StrSec:=IntToStr(Seconds);
+   if(Length(StrMin)<2)then
+   StrMin:='0'+StrMin;
+   if(Length(StrSec)<2)then
+   StrSec:='0'+StrSec ;
+
+   LCount.Text:='Количество ходов: '+IntToStr(Count)+#13#10+
+   'Время: '+StrMin+':'+StrSec;
+end;
+
+end.

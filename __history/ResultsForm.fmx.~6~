@@ -1,0 +1,27 @@
+object FormResults: TFormResults
+  Left = 0
+  Top = 0
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = Single
+  Caption = #1056#1077#1079#1091#1083#1100#1090#1072#1090#1099
+  ClientHeight = 330
+  ClientWidth = 435
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object GrTable: TGrid
+    CanFocus = True
+    ClipChildren = True
+    Size.Width = 435.000000000000000000
+    Size.Height = 329.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Options = [ColLines, RowLines, RowSelect, Tabs, Header, HeaderClick, AutoDisplacement]
+    OnHeaderClick = GrTableHeaderClick
+    OnGetValue = GrTableGetValue
+    Viewport.Width = 431.000000000000000000
+    Viewport.Height = 304.000000000000000000
+  end
+end

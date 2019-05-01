@@ -1,0 +1,109 @@
+unit MyCardView;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FMX.Types, FMX.Controls3D, FMX.Objects3D, FMX.Ani, FMX.MaterialSources;
+
+type
+  TCardView = class(TRectangle3D)
+  private
+  var
+  Row, Column: Integer;
+  Timer:TTimer;
+    Const
+      ANGLE = 180;
+      DeltaX = 3.5;
+      DeltaY = 5.5;
+      StartX = 0;
+      StartY = 0;
+
+    procedure HasClicked(Sender:TObject);
+    procedure ForTimer(Sender:TObject);
+  protected
+    { Protected declarations }
+  public
+
+     Constructor CreateCard(AOwner:TFMXObject; const MaterialSourceBack, MaterialSourceFront:TMaterialSource;Row, Column: Integer);
+     Constructor Create(AOwner:TComponent);override;
+     procedure Flip();
+     procedure FlipAfterSecond(Time:Cardinal);
+     var
+     OnHasClick: procedure (i, j:Integer) of object;
+     Animation: TFloatAnimation;
+  published
+    { Published declarations }
+  end;
+
+procedure Register;
+
+implementation
+
+procedure Register;
+begin
+  RegisterComponents('Samples', [TCardView]);
+end;
+
+{ TCardView }
+
+constructor TCardView.Create(AOwner:TComponent);
+begin
+  inherited;
+
+end;
+
+constructor TCardView.CreateCard(AOwner: TFMXObject; const MaterialSourceBack,
+  MaterialSourceFront: TMaterialSource; Row, Column: Integer);
+begin
+   Self:=TCardView.Create(AOwner);
+
+Self.Row:=Row;
+Self.Column:=Column;
+  Animation := TFloatAnimation.Create(Self);
+  Animation.Parent:=Self;
+  Animation.PropertyName:='RotationAngle.Y';
+  Animation.Duration:=0.5;
+  Animation.Enabled:=true;
+  Self.Flatness:=1;
+  Self.Height:=5;
+  Self.Width:=3;
+  Self.Depth:=0.05;
+  Self.Parent:=AOwner;
+  Self.Position.X:=StartX+DeltaX*Column;
+  Self.Position.Y:=StartY+DeltaY*Row;
+  Self.MaterialBackSource:=MaterialSourceBack;
+  Self.MaterialSource:=MaterialSourceFront;
+  Self.OnClick:=HasClicked;
+  Self.RotationAngle.Y:=ANGLE;
+  Animation.StopValue:=ANGLE;
+  Timer:=TTimer.Create(AOwner);
+  Timer.Enabled:=false;
+  Timer.OnTimer:=ForTimer;
+end;
+
+procedure TCardView.Flip;
+begin
+   Animation.StartValue:=Animation.StopValue;
+   Animation.StopValue:=Animation.StartValue+ANGLE;
+   Animation.Start;
+
+end;
+
+procedure TCardView.FlipAfterSecond;
+begin
+Timer.Interval:=Time;
+   Timer.Enabled:=true;
+end;
+
+procedure TCardView.ForTimer(Sender: TObject);
+begin
+   Timer.Enabled:=false;
+   Self.Flip;
+end;
+
+procedure TCardView.HasClicked(Sender: TObject);
+begin
+   OnHasClick(Self.Row, Self.Column);
+end;
+
+end.

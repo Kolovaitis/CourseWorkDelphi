@@ -1,0 +1,62 @@
+unit GameRecords;
+
+interface
+
+type
+   TResult = Record
+      TimeSec: Integer;
+      Name: ShortString;
+      Date: ShortString;
+      FieldRows: Integer;
+      FieldCols: Integer;
+      Steps: Integer;
+   End;
+   TDataType = Integer;
+
+   TRecordManager = class(TObject)
+    private
+      class var Instance: TRecordManager;
+      constructor Create();
+      var
+      CurrentData: TDataType;
+      WorkingFile: File of TResult;
+      const
+      FilePath = 'data.nik';
+   public
+      class function GetInstance(): TRecordManager;
+      property Data: TDataType read CurrentData;
+      destructor Destroy; override;
+   end;
+
+
+
+var
+   WorkingFile: File of TResult;
+
+implementation
+
+
+
+constructor TRecordManager.Create;
+begin
+   AssignFile(WorkingFile, FilePath);
+   if(not FileExists(FilePath))then
+end;
+
+
+
+destructor TRecordManager.Destroy;
+begin
+  inherited;
+  if(Instance<>nil)then
+  Instance.Free;
+end;
+
+class function TRecordManager.GetInstance: TRecordManager;
+begin
+   if (Instance = nil) then
+      Instance := TRecordManager.Create;
+   GetInstance := Instance;
+end;
+
+end.

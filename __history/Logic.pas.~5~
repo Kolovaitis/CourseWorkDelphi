@@ -1,0 +1,104 @@
+unit Logic;
+
+interface
+
+type
+PCardPointer = ^TCard;
+   TCard = record
+      EqualCard: PCardPointer;
+      IsTurned: Boolean;
+      Row: Integer;
+      Column: Integer;
+   end;
+
+   TMatrix = array of array of TCard;
+
+   TLogic = class
+   private
+      Field: TMatrix;
+      IsNowTurned: Boolean;
+      PastTurnedCard: PCardPointer;
+      procedure RandomizeCards;
+   public
+      FlipCard: procedure(Row, Column:Integer)of object;
+      FlipTwo: procedure(Row1, Column1,Row2, Column2:Integer)of object;
+      OnTouch: procedure(Row, Column:Integer)of object;
+      procedure OnCardTouched(Row, Column:Integer);
+      constructor Create(RowCount, ColumnCount: Integer);
+
+   end;
+
+implementation
+
+{ TLogic }
+
+constructor TLogic.Create(RowCount, ColumnCount: Integer);
+var
+   i: Integer;
+   j: Integer;
+begin
+   SetLength(Field, RowCount, ColumnCount);
+   for i := 0 to RowCount - 1 do
+      for j := 0 to ColumnCount - 1 do
+      begin
+         with Field[i,j] do
+         begin
+            IsTurned:=false;
+            Row:=i;
+            Column:=j;
+         end;
+      end;
+   RandomizeCards;
+   IsNowTurned:=false;
+   OnTouch:=Self.OnCardTouched;
+end;
+
+procedure TLogic.OnCardTouched(Row, Column: Integer);
+begin
+if(not Field[Row,Column].IsTurned)then
+begin
+if(IsNowTurned)then
+begin
+      FlipCard(Row,Column);
+      Field[Row, Column].IsTurned:=true;
+      IsNowTurned:=false;
+      if(Field[Row,Column].EqualCard <> PastTurnedCard)then
+      begin
+      FlipTwo(Row,Column, PastTurnedCard.Row, PastTurnedCard.Column);
+
+
+      PastTurnedCard.IsTurned:=false;
+      end
+      else
+      Field[Row, Column].IsTurned:=false;
+end
+else
+begin
+IsNowTurned:=true;
+Field[Row, Column].IsTurned:=true;
+   PastTurnedCard:=@Field[Row,Column];
+
+   FlipCard(Row,Column);
+end;
+end;
+
+end;
+
+procedure TLogic.RandomizeCards;
+var
+  i: Integer;
+  j: Integer;
+begin
+   for i := 0 to High(Field) do
+   begin
+   j:=0;
+      while j<High(Field[i]) do
+      begin
+          Field[i,j].EqualCard:=@Field[i,j+1];
+          Field[i,j+1].EqualCard:=@Field[i,j];
+          Inc(j,2);
+      end;
+end;
+end;
+
+end.

@@ -1,0 +1,4 @@
+BitmapModes RCDATA "ModesImage.png"
+BitmapRules RCDATA "RulesImage.png"
+BitmapSave RCDATA "SaveImage.png"
+BitmapAutor RCDATA "AutorImage.png"
