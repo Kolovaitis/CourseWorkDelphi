@@ -342,6 +342,7 @@
             <Form>FormHelp</Form>
             <FormType>fmx</FormType>
         </DCCReference>
+        <DCCReference Include="SoundManager.pas"/>
         <RcItem Include="ModesImage.png">
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>BitmapModes</ResourceId>
@@ -357,6 +358,14 @@
         <RcItem Include="AutorImage.png">
             <ResourceType>RCDATA</ResourceType>
             <ResourceId>BitmapAutor</ResourceId>
+        </RcItem>
+        <RcItem Include="SoundOff.png">
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>SoundOffImage</ResourceId>
+        </RcItem>
+        <RcItem Include="SoundOn.png">
+            <ResourceType>RCDATA</ResourceType>
+            <ResourceId>SoundOnImage</ResourceId>
         </RcItem>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
@@ -386,6 +395,12 @@
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
+                <DeployFile LocalName="SoundOn.png" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\osx32\libcgunwind.1.0.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
                         <Overwrite>true</Overwrite>
@@ -427,6 +442,12 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\osx32\libcgsqlite3.dylib" Class="DependencyModule">
                     <Platform Name="OSX32">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="SoundOff.png" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
