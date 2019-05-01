@@ -1,7 +1,0 @@
-inherited FormMain_Windows: TFormMain_Windows
-  Position = Designed
-  DesignerMasterStyle = 0
-  inherited Camera1: TCamera
-    Scale.X = 100.000000000000000000
-  end
-end

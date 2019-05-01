@@ -4,4 +4,4 @@
 *.nik
 Win32/
 Win64/
-_history/
+__history/
