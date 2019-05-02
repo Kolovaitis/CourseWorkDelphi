@@ -90,15 +90,15 @@ begin
             FlipTwo(Row, Column, PastTurnedCard.Row, PastTurnedCard.Column);
             PastTurnedCard.IsTurned := false;
             Field[Row, Column].IsTurned := false;
-            if(PlayerCount>1)then
-            ToNextPlayer;
+            if (PlayerCount > 1) then
+               ToNextPlayer;
          end
          else
          Begin
             // Совпали
             Inc(Points[CurrentPlayer]);
-            if(PlayerCount>1)then
-            RefreshPoints(Points[CurrentPlayer], CurrentPlayer);
+            if (PlayerCount > 1) then
+               RefreshPoints(Points[CurrentPlayer], CurrentPlayer);
             Dec(WinPair);
             if (WinPair = 0) then
                ChooseWinner;

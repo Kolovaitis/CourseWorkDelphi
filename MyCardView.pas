@@ -25,11 +25,11 @@ type
       Duration = 0.2;
       procedure HasClicked(Sender: TObject);
       procedure ForTimer(Sender: TObject);
-   protected
-      { Protected declarations }
+   
    public const
       StandartWidth = 3;
       StandartHeight = 5;
+      StandartDepth = 0.05;
       DeltaX = 3.5;
       DeltaY = 5.5;
       Constructor CreateCard(AOwner: TFMXObject;
@@ -43,9 +43,7 @@ type
    var
       OnHasClick: procedure(i, j: Integer) of object;
 
-   published
 
-      { Published declarations }
    end;
 
 procedure Register;
@@ -66,29 +64,31 @@ begin
 end;
 
 procedure TCardView.CreateAndPlayStartAnimation(Row, Column: Integer);
+const
+StartAnimationPropertyX = 'Position.X';
+StartAnimationPropertyY = 'Position.Y';
+StartAnimationDuration = 1;
+RandomRate = 30;
 var
    StartAnimationX, StartAnimationY: TFloatAnimation;
    StartAnimationZ: TFloatAnimation;
 begin
    StartAnimationX := TFloatAnimation.Create(Self);
    StartAnimationX.Parent := Self;
-   StartAnimationX.PropertyName := 'Position.X';
-   StartAnimationX.Duration := 1;
+   StartAnimationX.PropertyName := StartAnimationPropertyX;
+   StartAnimationX.Duration := StartAnimationDuration;
    StartAnimationX.Enabled := true;
    StartAnimationX.StopValue := StartX + DeltaX * Column;
-   StartAnimationX.StartValue := 10 - Random(20);
+   StartAnimationX.StartValue := Random(RandomRate);
    StartAnimationX.Start;
    StartAnimationY := TFloatAnimation.Create(Self);
    StartAnimationY.Parent := Self;
-   StartAnimationY.PropertyName := 'Position.Y';
-   StartAnimationY.Duration := 1;
+   StartAnimationY.PropertyName := StartAnimationPropertyY;
+   StartAnimationY.Duration := StartAnimationDuration;
    StartAnimationY.Enabled := true;
    StartAnimationY.StopValue := StartY + DeltaY * Row;
-   StartAnimationY.StartValue := Random(30);
+   StartAnimationY.StartValue := Random(RandomRate);
    StartAnimationY.Start;
-
-   // Self.Position.X := StartX + DeltaX * Column;
-   // Self.Position.Y := StartY + DeltaY * Row;
 end;
 
 constructor TCardView.CreateCard(AOwner: TFMXObject;
@@ -104,10 +104,9 @@ begin
    Animation.PropertyName := PropertyName;
    Animation.Duration := Duration;
    Animation.Enabled := true;
-   Self.Flatness := 1;
    Self.Height := StandartHeight;
    Self.Width := StandartWidth;
-   Self.Depth := 0.05;
+   Self.Depth := StandartDepth;
    Self.Parent := AOwner;
    Self.CreateAndPlayStartAnimation(Row, Column);
    Self.MaterialBackSource := MaterialSourceBack;

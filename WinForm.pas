@@ -7,7 +7,7 @@ uses
    System.Variants,
    FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
    FMX.Controls.Presentation, FMX.StdCtrls, System.Rtti, FMX.Grid.Style,
-   FMX.ScrollBox, FMX.Grid, GameRecords, Parser, FMX.Objects;
+   FMX.ScrollBox, FMX.Grid, GameRecords, Parser, FMX.Objects, SoundManager;
 
 type
    TFormWin = class(TForm)
@@ -19,6 +19,7 @@ type
       ImNotSave: TImage;
       procedure ImSaveClick(Sender: TObject);
       procedure ImNotSaveClick(Sender: TObject);
+      procedure FormClose(Sender: TObject; var Action: TCloseAction);
    private
    var
       TimeSec, TurnCount, ColCount, RowCount: Integer;
@@ -34,6 +35,7 @@ type
 
 var
    FormWin: TFormWin;
+
 const
    MOV_COUNT = 'Количество ходов: ';
    TIME_STR = 'Время: ';
@@ -41,10 +43,16 @@ const
    INPUTBOX_TEXT = 'Пожалуйста, укажите своё имя';
    INPUTBOX_ERROR = 'Произошла ошибка сохранения';
    LCOUT_TEXT = 'Победил игрок %d, который набрал %d очков';
+
 implementation
 
 {$R *.fmx}
 { TFormWin }
+
+procedure TFormWin.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   TAudioManager.GetInstance(Self).StopWinSound;
+end;
 
 procedure TFormWin.ImNotSaveClick(Sender: TObject);
 begin
@@ -107,7 +115,7 @@ begin
          Winner := i;
          WinPoints := Results[Winner];
       end;
-   LCount.Text := Format(LCOUT_TEXT, [Winner+1, WinPoints]);
+   LCount.Text := Format(LCOUT_TEXT, [Winner + 1, WinPoints]);
 end;
 
 function TFormWin.SaveResult: Boolean;
@@ -116,8 +124,7 @@ var
    Name: String;
 begin
 
-   Name := InputBox(INPUTBOX_TITLE,
-     INPUTBOX_TEXT, '');
+   Name := InputBox(INPUTBOX_TITLE, INPUTBOX_TEXT, '');
    if (Name <> '') then
    begin
       result := true;

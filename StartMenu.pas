@@ -21,27 +21,28 @@ type
       LField: TLabel;
       LPlayerCount: TLabel;
       ComboBoxPlayerCount: TComboBox;
-    ImSound: TImage;
+      ImSound: TImage;
       procedure ButtonStartClick(Sender: TObject);
 
       procedure MIResultsClick(Sender: TObject);
 
       procedure MIHelpClick(Sender: TObject);
-    procedure FormShow(Sender: TObject);
-    procedure ImSoundClick(Sender: TObject);
+      procedure FormShow(Sender: TObject);
+      procedure ImSoundClick(Sender: TObject);
 
    private
-      BitmapForSound: array [false..true] of TBitmap;
+      BitmapForSound: array [false .. true] of TBitmap;
       procedure StartGame(FieldRows, FieldCols, PlayerCount: Integer);
       procedure ViewHelp();
       procedure ViewResults();
       procedure InitSoundOffBmp();
       procedure SoundModeChange();
-      procedure ChangeSoundImage(SoundImage:Boolean);
+      procedure ChangeSoundImage(SoundImage: Boolean);
    public const
       Level: array [0 .. 3, 1 .. 2] of Integer = ((2, 2), (3, 2),
         (2, 4), (3, 4));
-      SoundBitmap : array [false..true] of String = ('SoundOffImage', 'SoundOnImage');
+      SoundBitmap: array [false .. true] of String = ('SoundOffImage',
+        'SoundOnImage');
    end;
 
 var
@@ -49,7 +50,8 @@ var
    MainForm: TFormMain;
    ResultsForm: TFormResults;
    HelpForm: TFormHelp;
-   AudioManager:TAudioManager;
+   AudioManager: TAudioManager;
+
 implementation
 
 {$R *.fmx}
@@ -67,30 +69,31 @@ end;
 
 procedure TFormStart.ChangeSoundImage(SoundImage: Boolean);
 begin
-   ImSound.Bitmap:=BitmapForSound[SoundImage];
+   ImSound.Bitmap := BitmapForSound[SoundImage];
 end;
 
 procedure TFormStart.FormShow(Sender: TObject);
 
 begin
    InitSoundOffBmp;
+   AudioManager := TAudioManager.GetInstance(Self);
+   AudioManager.ChangeSoundImage := ChangeSoundImage;
 end;
 
 procedure TFormStart.ImSoundClick(Sender: TObject);
 begin
-AudioManager:=TAudioManager.GetInstance;
-AudioManager.ChangeSoundImage:=ChangeSoundImage;
-SoundModeChange;
+
+   SoundModeChange;
 end;
 
 procedure TFormStart.InitSoundOffBmp;
 var
    InStream: TResourceStream;
-  i: Boolean;
+   i: Boolean;
 begin
    for i := false to true do
    begin
-   InStream := TResourceStream.Create(HInstance, SoundBitmap[i],
+      InStream := TResourceStream.Create(HInstance, SoundBitmap[i],
         PChar(RT_RCDATA));
       try
          BitmapForSound[i] := TBitmap.Create;
@@ -113,7 +116,7 @@ end;
 
 procedure TFormStart.SoundModeChange;
 var
-   TempBmp:TBitmap;
+   TempBmp: TBitmap;
 begin
    AudioManager.ChangeSoundState;
 end;

@@ -9,7 +9,7 @@ uses
    FMX.Dialogs, System.Math.Vectors, FMX.Controls3D, FMX.Objects3D,
    FMX.MaterialSources, FMX.Media, FMX.Controls.Presentation, FMX.StdCtrls,
    Logic,
-   FMX.Ani, MyCardView, FMX.Layers3D, WinForm, FMX.Menus, Parser;
+   FMX.Ani, MyCardView, FMX.Layers3D, WinForm, FMX.Menus, Parser, SoundManager;
 
 type
    TCords = Record
@@ -41,7 +41,7 @@ type
       procedure Form3DShow(Sender: TObject);
       procedure TimerSinglePlayerTimer(Sender: TObject);
    private
-
+      AudioManager:TAudioManager;
       AllCards: TControlMatrix;
       Logic: TLogic;
       Rows, Cols: Integer;
@@ -73,10 +73,11 @@ var
 const
    TimeToSee = 1000;
    WHO_TURN = 'Ходит игрок %d';
-   MOV_COUNT =  'Количество попыток: %d';
+   MOV_COUNT = 'Количество попыток: %d';
    START_POINTS_MENU = 'Игрок %d: 0 ';
    POINTS_MENU = 'Игрок %d: %d ';
    TIME_STR = 'Время: ';
+
 implementation
 
 {$R *.fmx}
@@ -84,25 +85,26 @@ implementation
 
 procedure TFormMain.FlipCard(Row, Column: Integer);
 begin
+   AudioManager.PlayCardTurnSound;
    Self.AllCards[Row, Column].Flip;
 end;
 
 procedure TFormMain.FlipTwo(Row1, Column1, Row2, Column2: Integer);
 begin
-
+   AudioManager.PlayCardTurnSound;
    AllCards[Row1, Column1].FlipAfterSecond(TimeToSee);
    AllCards[Row2, Column2].FlipAfterSecond(TimeToSee);
 end;
 
 procedure TFormMain.ChangePlayer(NewPlayer: Integer);
 begin
-   MenuWhoTurn.Text := Format(WHO_TURN,[NewPlayer+1]);
+   MenuWhoTurn.Text := Format(WHO_TURN, [NewPlayer + 1]);
 end;
 
 procedure TFormMain.CountUp;
 begin
    Inc(Count);
-   MenuCount.Text := Format(MOV_COUNT,[Count]);
+   MenuCount.Text := Format(MOV_COUNT, [Count]);
 end;
 
 constructor TFormMain.Create(AOwner: TComponent; Rows, Columns: Integer;
@@ -126,6 +128,7 @@ procedure TFormMain.Form3DShow(Sender: TObject);
 var
    I: Integer;
 begin
+AudioManager:=TAudioManager.GetInstance(Self);
    if (PlayerCount > 1) then
    begin
       SetLength(PointsMenu, PlayerCount);
@@ -133,7 +136,7 @@ begin
       begin
          PointsMenu[I] := TMenuItem.Create(Self);
          PointsMenu[I].Parent := MMState;
-         PointsMenu[I].Text := Format(START_POINTS_MENU,[I + 1]);
+         PointsMenu[I].Text := Format(START_POINTS_MENU, [I + 1]);
       end;
       MenuWhoTurn.Visible := true;
    end;
@@ -203,15 +206,15 @@ end;
 
 procedure TFormMain.RefreshPoints(NewPoints, Player: Integer);
 begin
-   PointsMenu[Player].Text := Format(POINTS_MENU,[Player+1, NewPoints]);
+   PointsMenu[Player].Text := Format(POINTS_MENU, [Player + 1, NewPoints]);
 end;
 
 procedure TFormMain.SetScale;
 begin
-   DummyAllCards.Position.X := (TCardView.StandartWidth - TCardView.DeltaX
-     * Cols) / 2;
-   DummyAllCards.Position.Y := (TCardView.StandartHeight - TCardView.DeltaY
-     * Rows) / 2;
+   DummyAllCards.Position.X := (TCardView.StandartWidth - TCardView.DeltaX *
+     Cols) / 2;
+   DummyAllCards.Position.Y := (TCardView.StandartHeight - TCardView.DeltaY *
+     Rows) / 2;
    CameraMain.AngleOfView := 15 * (Rows + 1);
 
 end;
@@ -229,8 +232,10 @@ var
    WinForm: TFormWin;
 begin
    TimerSinglePlayer.Enabled := false;
+   TAudioManager.GetInstance(Self).PlayWinSound;
    WinForm := TFormWin.Create(Self, Points, Count, TimeSeconds, Cols, Rows);
    WinForm.ShowModal();
+
    Self.Close();
 
 end;
